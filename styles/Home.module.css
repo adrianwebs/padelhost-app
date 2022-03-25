@@ -31,12 +31,14 @@
 .title a {
   color: #0070f3;
   text-decoration: none;
+  transition: .3s ease-in-out;
 }
 
 .title a:hover,
 .title a:focus,
 .title a:active {
-  text-decoration: underline;
+  text-decoration: none;
+  color: aqua;
 }
 
 .title {
