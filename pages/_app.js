@@ -13,6 +13,10 @@ function MyApp({ Component, pageProps }) {
         main: '#69DFE2',
         contrastText: '#000'
       },
+      darkblue: {
+        main: '#22356D',
+        contrastText: '#fff'
+      },
       success: {
         main: '#95D704',
         contrastText: '#fff'

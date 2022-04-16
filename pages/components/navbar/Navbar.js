@@ -5,6 +5,8 @@ import { ExpandMore } from '@mui/icons-material'
 import MenuIcon from '@mui/icons-material/Menu'
 import { AppBar, Link, Box, Toolbar, IconButton, Typography, Menu, Container, Avatar, Button, Tooltip, MenuItem } from '@mui/material'
 
+import LinkA from 'next/link'
+
 const pages = ['Features', 'Reviews', 'Blog', 'Pricing'];
 const settings = ['Spanish', 'English', 'French'];
 
@@ -30,7 +32,7 @@ function Navbar() {
 
 
   return (
-    <AppBar position="static" style={{background: 'transparent', boxShadow: '0px 0px 10px #00000022'}}>
+    <AppBar position="fixed" style={{background: 'transparent', boxShadow: '0px 0px 10px #00000022', backdropFilter: 'blur(2px)'}}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -87,7 +89,7 @@ function Navbar() {
           </Typography>
           <Box sx={{ flexGrow: 0, margin: 'auto', display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
-                <Link href={'#' + page} key={page} sx={{m: 1, cursor: 'pointer', color: '#000', display: 'block', textDecoration: 'none', textTransform: 'none', '&:hover': {color: '#E26C69'}, transition: 'all .3s ease-in-out'}}>{page}</Link>
+                <Link href={'#' + page} key={page} sx={{margin: '15px', cursor: 'pointer', color: '#000', display: 'block', textDecoration: 'none', textTransform: 'none', '&:hover': {color: '#E26C69'}, transition: 'all .3s ease-in-out'}}>{page}</Link>
             ))}
           </Box>
           <Box sx={{ flexGrow: 0 , display: 'flex', flexDirection: 'row' }}>
@@ -98,7 +100,7 @@ function Navbar() {
               <ExpandMore sx={{margin: 'auto 0'}}></ExpandMore>
 
             </Button>
-            <Button variant='contained' color='primary' sx={{mx: 1, textTransform: 'none', boxShadow: '0 0 0'}}>Member Area</Button>
+            <Button variant='contained' color='primary' sx={{mx: 1, textTransform: 'none', boxShadow: '0 0 0'}}><LinkA href='/login'><a>Member Area</a></LinkA></Button>
           </Box>
           <Menu
             sx={{ mt: '45px', boxShadow: '0' }}
