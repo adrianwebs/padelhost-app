@@ -7,7 +7,7 @@ import EventNote from '@mui/icons-material/EventNote'
 import Timer from '@mui/icons-material/Timer'
 import Place from '@mui/icons-material/Place'
 
-import { Button } from '@mui/material'
+import { Box, Button } from '@mui/material'
 
 import Navbar from './components/navbar/Navbar'
 
@@ -18,9 +18,7 @@ export default function Home() {
   return (
     
     <div className={styles.container}>
-      <title>Padelhost - Social Padel App</title>
-      <meta name="description" content="Padelhost is the app that makes you save time, money and effort. It helps you easily reserve a court, find players to play with and locate the best places to play in your city. Want to book a court? Just open the app and reserve it with one click. Don't have a partner? Find one in the app, wherever you are. Are you traveling to another city? Find the best place to play there and make new friends!" />
-      <link rel="icon" href="/favicon.ico" />
+      
       <body className='app_body'>
         <Navbar />
         
@@ -61,7 +59,7 @@ export default function Home() {
             sx={{mx: 1, textTransform: 'none', boxShadow: '0 0 0', width: 'auto', paddingX: '40px'}}>
               <LinkA href='/login'><a>Book your Padel Pitch right now!</a></LinkA>
             </Button>
-            <div className={styles.features_content}>
+            <Box className={styles.features_content} sx={{flexDirection: {xs: 'column', md: 'column', lg: 'column', xl: 'row'} }}>
               <div className={styles.features_item}>
                 <span>1</span>
                 <div className={styles.features_icon}><EventNote fontSize='large' color='primary' /></div>
@@ -91,7 +89,7 @@ export default function Home() {
                 </h4>
               </div>
               
-            </div>
+            </Box>
             <div className={styles.features_leaderboard}>
                 <h2>That's not all! You can also play in a competitive leaderboard
                    against other players or clubs and being at the top of the game.</h2>
