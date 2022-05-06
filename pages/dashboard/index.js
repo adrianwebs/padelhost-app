@@ -7,7 +7,7 @@ import NavbarDashboard from '../components/navbar/NavbarDashboard'
 
 import useUser from '../../hooks/user/useUser'
 
-function index() {
+function Dashboard() {
   const user = useUser()
   
   return (
@@ -27,4 +27,4 @@ function index() {
   )
 }
 
-export default index
+export default Dashboard

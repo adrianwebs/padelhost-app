@@ -13,7 +13,7 @@ import { useRouter } from 'next/dist/client/router'
 
 import useUser from '../../hooks/user/useUser'
 
-export default function index() {
+export default function Login() {
   
   const user = useUser()
   const router = useRouter()

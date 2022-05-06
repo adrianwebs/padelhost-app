@@ -15,7 +15,7 @@ import { Button } from 'react-bootstrap'
 
 import NavbarHome from './components/navbar/NavbarHome.js'
 
-import LinkA from 'next/link'
+import Link from 'next/link'
 
 
 export default function Home() {
@@ -126,27 +126,27 @@ export default function Home() {
           <div className='container'>
             <div className='row justify-content-center text-center'>
               <h3 className='text-title'>Contact Us</h3>
-              <span className='w-75 m-3'>It's very easy to get in touch with us. Just use the contact form or send an email for any inquiry</span>
+              <span className='w-75 m-3'>It&apos;s very easy to get in touch with us. Just use the contact form or send an email for any inquiry</span>
             </div>
           </div>
         </section>
-        <footer class="footer-section bg-secondary ptb-60">
-          <div class="footer-wrap">
-            <div class="container">
-              <div class="row">
-                <div class="col-md-6 col-md-offset-3">
-                  <div class="footer-single-col text-center">
+        <footer className="footer-section bg-secondary">
+          <div className="footer-wrap">
+            <div className="container">
+              <div className="row">
+                <div className="col-md-6 col-md-offset-3">
+                  <div className="footer-single-col text-center">
                     <img alt="" src="/img/logo-color.png"></img>
-                    <div class="footer-social-list">
-                      <ul class="list-inline">
-                        <li><a href="/"><i class="fa fa-facebook"></i></a></li>
-                        <li><a href="/"> <i class="fa fa-twitter"></i></a></li>
-                        <li><a href="/"> <i class="fa fa-linkedin"></i></a></li>
-                        <li><a href="/"> <i class="fa fa-google-plus"></i></a></li>
-                        <li><a href="/"> <i class="fa fa-youtube"></i></a></li>
+                    <div className="footer-social-list">
+                      <ul className="list-inline">
+                        <li><Link href="/"><a><i className="fa fa-facebook"></i></a></Link></li>
+                        <li><Link href="/"><a><i className="fa fa-twitter"></i></a></Link></li>
+                        <li><Link href="/"><a><i className="fa fa-linkedin"></i></a></Link></li>
+                        <li><Link href="/"><a><i className="fa fa-google-plus"></i></a></Link></li>
+                        <li><Link href="/"><a><i className="fa fa-youtube"></i></a></Link></li>
                       </ul>
                     </div>
-                    <div class="copyright-text">
+                    <div className="copyright-text">
                       <p>© copyright <a href="apetech">ApeTech</a>
                       Software Template By <a href="https://themeforest.net/user/htmllover/portfolio" target="_blank" rel="noopener noreferrer">HtmlLover</a>
                       </p>
