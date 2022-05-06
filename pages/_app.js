@@ -1,4 +1,6 @@
 import '../styles/globals.css'
+import '../styles/globals.scss'
+
 
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 
