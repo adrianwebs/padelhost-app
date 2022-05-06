@@ -19,7 +19,9 @@ function NavbarHome() {
           <Nav className="ms-auto text-center justify-content-center align-items-center ">
             {
               pages.map((page) => (
-                <Nav.Link href={"#"+page}>{page}</Nav.Link>
+                <div key={page}>
+                  <Nav.Link href={"#"+page}>{page}</Nav.Link>
+                </div>
               ))
             }
             <Button className='mx-4 w-50 btn-light'><Link href='../login/'><a className='text-decoration-none text-black'>Member Area</a></Link></Button>
