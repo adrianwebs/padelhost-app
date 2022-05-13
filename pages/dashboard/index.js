@@ -17,11 +17,19 @@ function Dashboard() {
           <meta name="description" content="" />
           <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className=''>
-          {
+      {
               user && 
-              <NavbarDashboard username={user.username} avatar={user.avatar} />
+              <NavbarDashboard username={user.username} />
+              
           }
+      <div className='d-flex flex-direction-row w-100'>
+          <img src='images/waveDashboard.png' className='shadow-md position-absolute w-100'/>
+          <div className='w-25  bg-light-dark min-vh-100'>
+
+          </div>
+          <div className='w-100 bg-white min-vh-100'>
+
+          </div>
       </div>
     </>
   )
