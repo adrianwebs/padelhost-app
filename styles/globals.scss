@@ -2,8 +2,12 @@ body {
     font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
 }
 
+:root {
+    --primary-gradient: linear-gradient(75deg, #22356D -10%, #69DFE2 110%);
+}
+
 .primary-gradient {
-    background: linear-gradient(75deg, #22356D -10%, #69DFE2 110%);
+    background: var(--primary-gradient)
 }
 
 .header-bg {
@@ -21,6 +25,7 @@ body {
     background-size: cover;
     background-position: center center;
     width: 100%;
+    
 }
 
 .p-6 {
@@ -63,6 +68,14 @@ body {
     transition: all .4s ease;
 }
 
+.w-35 {
+    width: 35%;
+}
+
+.w-65 {
+    width: 65%;
+}
+
 .min-vh-50 {
     min-height: 50vh;
 }
@@ -91,10 +104,77 @@ body {
     z-index: 1;
 }
 
-.z-index-1-{
-    z-index: -1;
+.z-index-3{
+    z-index: 3;
+}
+
+.z-index-2{
+    z-index: 2;
 }
 
 .bg-light-dark {
     background-color: #ededed;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+.min-height-description {
+    min-height: 150px;
+}
+
+.gap-4_5 {
+    gap: 1.75rem;
+}
+
+.rounded-4 {
+    border-radius: 1rem;
+}
+
+.shadow-waves {
+    filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.25));
+    -webkit-filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.45));
+}
+
+.shadow-panel {
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
+}   
+
+.shadow-dashboard-buttons {
+    box-shadow: 0 0 11px rgba(0, 0, 0, 0.15);
+    transition: all .4s ease-in-out;
+    color: #2c3e50;
+}
+
+.shadow-dashboard-buttons:hover {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.30);
+    color: #487bba;
+    cursor: pointer;
+}
+
+.featherIcon {
+    transition: all .3s ease-in-out;
+}
+
+.separator {
+    min-height: 250px;
+}
+
+.min-h-70 {
+    min-height: 70%;
+    max-height: 70%;
+}
+
+.color-primary {
+    color: #69DFE2;
+}
+
+.color-inherit {
+    color: inherit;
+}
+
+.border-bottom-active {
+    border-bottom: solid 2px #22356D
 }

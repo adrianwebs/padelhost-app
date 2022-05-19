@@ -1,11 +1,11 @@
 .container {
     align-items: center;
     display: flex;
+    border-radius: 9999px;
+    border: solid 5px #5d99d1;
   }
   
   .avatar {
     border-radius: 9999px;
-    height: 49px;
-    width: 49px;
   }
   

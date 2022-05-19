@@ -19,7 +19,7 @@ export default function Login() {
   const router = useRouter()
 
   useEffect(() => {
-    user && router.replace('/dashboard')
+    user && router.replace('/home')
   }, [user])
 
   const handleFacebook = () => {
