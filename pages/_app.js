@@ -1,10 +1,11 @@
 import '../styles/globals.css'
 import '../styles/globals.scss'
 
-
+import { Provider } from 'react-redux'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 
 import Head from 'next/head'
+import { store } from '../services/store'
 
 function MyApp({ Component, pageProps }) {
   const theme = createTheme({
@@ -35,20 +36,26 @@ function MyApp({ Component, pageProps }) {
       black: {
         main: '#000',
         contrastText: '#fff'
+      },
+      gray: {
+        main: '#ffffc8',
+        contrastText: 'ccc'
       }
     }
   })
 
   return (
-    <ThemeProvider theme={theme}>
-      <Head>
-        <title>Padelhost - Social Padel App</title>
-        <meta name="description" content="Padelhost is the app that makes you save time, money and effort. It helps you easily reserve a court, find players to play with and locate the best places to play in your city. Want to book a court? Just open the app and reserve it with one click. Don't have a partner? Find one in the app, wherever you are. Are you traveling to another city? Find the best place to play there and make new friends!" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      
-      <Component {...pageProps} />
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <Head>
+          <title>Padelhost - Social Padel App</title>
+          <meta name="description" content="Padelhost is the app that makes you save time, money and effort. It helps you easily reserve a court, find players to play with and locate the best places to play in your city. Want to book a court? Just open the app and reserve it with one click. Don't have a partner? Find one in the app, wherever you are. Are you traveling to another city? Find the best place to play there and make new friends!" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        
+        <Component {...pageProps} />
+      </ThemeProvider>
+    </Provider>
   )
 }
 

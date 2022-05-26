@@ -176,5 +176,70 @@ body {
 }
 
 .border-bottom-active {
-    border-bottom: solid 2px #22356D
+    border-bottom: solid 2px #22356D;
+    font-weight: 600;
 }
+
+.filledButton {
+    background-image: linear-gradient(-45deg, #22356D -10%, #69DFE2 110%);
+    color: #f9f9f9;
+    border: none
+}
+
+.outlinedButton {
+    border: 1px solid #253232;
+    color: #253232;
+}
+
+.customButton {
+    border-radius: 10px ;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+    padding: 0.25rem 0.5rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    transition: box-shadow .5s ease-in-out;
+
+    > * {
+        margin: 0 2px;
+        color: inherit;
+    }
+}
+
+.customButton:hover{
+    cursor: pointer;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.45);
+}
+
+.text-end {
+    text-align: end;
+}
+
+.mb-0{
+    margin-bottom: 0;
+}
+
+/* width */
+.hide-scrollbar::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  /* Track */
+  .hide-scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+    border-radius: 999px;
+    
+  }
+   
+  /* Handle */
+  .hide-scrollbar::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: #69DFE299;
+  }
+  
+  /* Handle on hover */
+  .hide-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #69DFE2; 
+  }

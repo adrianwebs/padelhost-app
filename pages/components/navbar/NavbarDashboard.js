@@ -6,16 +6,22 @@ import styles from './styles.module.css'
 import { Navbar, Container, Nav } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.css'
 
-import {signOutUser} from '../../../firebase/client'
 
 import { motion } from 'framer-motion'
+import { useDispatch, useSelector } from 'react-redux'
+import { Typography } from '@mui/material'
 
-const pages = ['Dashboard', 'Pitches', 'Matches', 'Tournaments', 'Leaderboard']
+const pages = ['General', 'Reservar', 'Partidos', 'Torneos', 'Clasificación']
 
 function HomeNavbar ({username}) {
+  const dispatch = useDispatch()
+  const navbarSelected = useSelector(state => state)
 
-  const handleSignOut = () => {
-    signOutUser()
+  const handleNavbar = (page) => {
+    dispatch({
+      type: '@navbar/changed',
+      payload: page
+    })
   }
 
   return (
@@ -34,14 +40,14 @@ function HomeNavbar ({username}) {
                 {
                   pages.map((page) => (
                     <div key={page}>
-                      <Nav.Link href={"#"+page}>{page}</Nav.Link>
+                      <Nav.Link onClick={() => handleNavbar(page)} className={navbarSelected === page ? 'active' : ''}>{page}</Nav.Link>
                     </div>
                   ))
                 }
               </Nav>
               
               <div className='d-flex justify-content-center align-items-center '>
-                  <button onClick={handleSignOut}>Logout</button>
+                  
                   <Nav.Link className='mx-2 text-white'>{username}</Nav.Link>
                 </div>
             </Navbar.Collapse>
