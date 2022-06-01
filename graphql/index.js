@@ -1,10 +1,6 @@
 import './db.js';
-import { createServer } from 'http';
-import express from 'express';
-import cors from 'cors';
-import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
 
-import { ApolloServer } from "apollo-server-express";
+import { ApolloServer } from "apollo-server"
 import { editPitch, findAvailablePitches, getClubPitches, typeDefPitches, addPitch, pitchCount } from "./models/pitch.js"
 import { allUsers, findUser, createUser, editUser, deleteUser, countUsers, typeDefAuthor } from "./models/user.js"
 import { allClubs, getClub, createClub, typeDefClubs } from "./models/clubs.js"
@@ -45,22 +41,11 @@ const resolvers = {
   }
 }
 
-const app = express();
-app.use(cors());
-app.use(express.json());
-const httpServer = createServer(app);
+const server = new ApolloServer({
+  typeDefs: [ typeDefClubs, typeDefAuthor, typeDefReservation, typeDefPitches, typeDefChats],
+  resolvers
+})
 
-const startApolloServer = async(app, httpServer) => {
-  const server = new ApolloServer({
-    typeDefs: [ typeDefClubs, typeDefAuthor, typeDefReservation, typeDefPitches, typeDefChats],
-    resolvers,
-    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
-  });
-
-  await server.start();
-  server.applyMiddleware({ app });
-}
-
-startApolloServer(app, httpServer);
-
-export default httpServer;
+server.listen().then(({url}) => {
+  console.log(`Server ready at ${url}`)
+})
