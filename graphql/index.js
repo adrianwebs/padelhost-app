@@ -1,4 +1,6 @@
 import './db.js';
+import { createServer } from 'http';
+import express from 'express';
 
 import { ApolloServer } from "apollo-server"
 import { editPitch, findAvailablePitches, getClubPitches, typeDefPitches, addPitch, pitchCount } from "./models/pitch.js"
@@ -41,11 +43,25 @@ const resolvers = {
   }
 }
 
-const server = new ApolloServer({
-  typeDefs: [ typeDefClubs, typeDefAuthor, typeDefReservation, typeDefPitches, typeDefChats],
-  resolvers
-})
+const startServer = async () => { 
+  const app = express()
+  const httpServer = createServer(app)
 
-server.listen().then(({url}) => {
-  console.log(`Server ready at ${url}`)
-})
+  const apolloServer = new ApolloServer({
+    typeDefs: [ typeDefClubs, typeDefAuthor, typeDefReservation, typeDefPitches, typeDefChats],
+    resolvers
+  })
+
+  await apolloServer.start()
+
+  apolloServer.applyMiddleware({
+      app,
+      path: '/api'
+  })
+
+  httpServer.listen({ port: process.env.PORT || 4000 }, () =>
+    console.log(`Server listening on localhost:4000${apolloServer.graphqlPath}`)
+  )
+}
+
+startServer()
