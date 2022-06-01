@@ -1,95 +1,52 @@
 import { gql } from "apollo-server"
+import mongoose from "mongoose"
 
-export 
-const pitches = [{
-  id: 'asdfasdfasdfasdfasdf',
-  club: 'Escuela de Padel Albacete',
-  name: 'nº 6',
-  city: 'albacete',
-  street: 'campollano',
-  type: 'doubles',
-  timezones: [{
-    price: '2.50€',
-    timestart: '8:00',
-    timeend: '14:00'
-  },{
-    price: '4.50€',
-    timestart: '14:00',
-    timeend: '17:00'
-  }]
-  
-},{
-  id: 'asdfasdfasdfasd',
-  club: 'Escuela de Padel Albacete',
-  name: 'nº 6',
-  city: 'albacete',
-  street: 'campollano',
-  type: 'doubles',
-  price: '4.50€',
-  timestart: '14:00',
-  timeend: '17:00'
-},{
-  id: 'asdfasdfasdfasdfasdfa',
-  club: {
-    user: {
-      name: "+ Que Padel",
-      description: "Hola soy un club",
-      phone: "1234124312asdf",
-      location: "Albacete",
-      email: "epa@gmail.com",
-      password: "asdfasdf",
-    },
-    pitches: [
-      {
-        id: 'asdfasdfasdfasdfasdf',
-        club: 'Escuela de Padel Albacete',
-        name: 'nº 6',
-        city: 'albacete',
-        street: 'campollano',
-        type: 'doubles',
-        price: '2.50€',
-        timestart: '8:00',
-        timeend: '14:00'
-      },{
-        id: 'asdfasdfasdfasd',
-        club: 'Escuela de Padel Albacete',
-        name: 'nº 6',
-        city: 'albacete',
-        street: 'campollano',
-        type: 'doubles',
-        price: '4.50€',
-        timestart: '14:00',
-        timeend: '17:00'
-      }
-    ]
+const timezoneSchema = new mongoose.Schema({
+  price: {
+    type: Number,
+    required: true,
   },
-  name: 'nº 6',
-  city: 'albacete',
-  street: 'campollano',
-  type: 'doubles',
-  price: '4.50€',
-  timestart: '17:00',
-  timeend: '20:00'
-}]
+  timestart: {
+    type: String,
+    required: true,
+  },
+  timeend: {
+    type: String,
+    required: true,
+  }
+})
 
-export const timezones = [{
-  price: '2.50€',
-  timestart: '8:00',
-  timeend: '14:00'
-},{
-  price: '4.50€',
-  timestart: '14:00',
-  timeend: '17:00'
-},{
-  price: '5.50€',
-  timestart: '17:00',
-  timeend: '20:00'
-}]
+export const pitchSchema = new mongoose.Schema({
+  club: {
+    type: String,
+    required: true,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  city: {
+    type: String,
+    required: true,
+  },
+  street: {
+    type: String,
+  },
+  type: {
+    type: String,
+    required: true,
+  },
+  timezones: {
+    type: [timezoneSchema],
+    required: true,
+  }
+})
+
+const Pitch = mongoose.model("Pitch", pitchSchema);
 
 export const typeDefPitches = gql`
   type Pitch {
-    id: ID!
-    club: Club!
+    club: String!
     name: String!
     city: String
     street: String
@@ -110,6 +67,7 @@ export const typeDefPitches = gql`
   }
 
   type Query {
+    pitchCount: Int!
     findAvailablePitches(
       city: String!
       type: String!
@@ -125,24 +83,37 @@ export const typeDefPitches = gql`
       name: String
       timezones: [TimezoneInput]
     ): Pitch
+    addPitch(
+      club: String!
+      name: String!
+      city: String
+      street: String
+      type: String!
+      timezones: [TimezoneInput]
+    ): Pitch
   }
 `
 
-export const findAvailablePitches = (root, args) => {
-  return pitches
+export const pitchCount = async () => {
+  return await Pitch.countdocuments({})
+}
+export const findAvailablePitches = async (root, args) => {
+  //Falta filtro por pista disponible
+  return await Pitch.find({})
 }
 
-export const getClubPitches = (root, args) => {
-  return pitches.filter(pitch => pitch.club.id === args.id)
+export const getClubPitches = async (root, args) => {
+  //Falta filtro por pistas del club
+  return await Pitch.find({})
 }
 
 export const editPitch = (root, args) => {
-  const pitchIndex = pitches.findIndex(pitch => pitch.id === args.id)
-  if (pitchIndex === -1 ) {return null}
+  const pitch = Pitch.findOne({id: args.id})
+  pitch = { ...pitch, ...args }
+  return pitch.save()
+}
 
-  const pitch = pitches[pitchIndex]
-  const updatedPitch = {...pitch, name: args.name, timezones: args.timezones}
-  pitches[pitchIndex] = updatedPitch
-  
-  return updatedPitch
+export const addPitch = async (root, args) => {
+  const pitch = await new Pitch({...args})
+  return pitch.save()
 }

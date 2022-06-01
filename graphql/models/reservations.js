@@ -1,79 +1,44 @@
 import { gql } from "apollo-server"
+import mongoose from "mongoose"
+import { pitchSchema } from "./pitch.js"
+import { userSchema } from "./user.js"
 
-export const reservations = [{
-  id: "asdfasdfadsa",
-  price: "4.50€",
-  timestart: "17:30",
-  timeend: "19:00",
-  teams: [{
-    firstPlayer: {
-      name: "Adrian",
-      description: "Hola soy Adri",
-      phone: "1234124312",
-      location: "Albacete",
-      email: "adrygoleador@gmail.com",
-      password: "adfasdf",
-      category: "5ª",
-      rank: "1567",
-      id: "143253124332"
-    },
-    secondPlayer: {
-      name: "Juan",
-      description: "Hola soy asdfs",
-      phone: "123412431asdf2",
-      location: "Bdl",
-      email: "joan@gmail.com",
-      password: "adfasdfasdf",
-      category: "5ª",
-      rank: "1567",
-      id: "1432531243"
-    }
-  }],
-  status: "Uncompleted",
+const ReservationSchema = new mongoose.Schema({
   pitch: {
-    id: 'asdfasdfasdfasd',
-    club: {
-      user: {
-        name: "Escuela de Padel Albacete",
-        description: "Hola soy un club",
-        phone: "1234124312asdf",
-        location: "Albacete",
-        email: "epa@gmail.com",
-        password: "asdfasdf",
-      },
-      pitches: [
-        {
-          id: 'asdfasdfasdfasdfasdf',
-          club: 'Escuela de Padel Albacete',
-          name: 'nº 6',
-          city: 'albacete',
-          street: 'campollano',
-          type: 'doubles',
-          price: '2.50€',
-          timestart: '8:00',
-          timeend: '14:00'
-        },{
-          id: 'asdfasdfasdfasd',
-          club: 'Escuela de Padel Albacete',
-          name: 'nº 6',
-          city: 'albacete',
-          street: 'campollano',
-          type: 'doubles',
-          price: '4.50€',
-          timestart: '14:00',
-          timeend: '17:00'
-        }
-      ]
-    },
-    name: 'nº 6',
-    city: 'albacete',
-    street: 'campollano',
-    type: 'doubles',
-    price: '4.50€',
-    timestart: '14:00',
-    timeend: '17:00'
+    type: pitchSchema,
+    required: true
   },
-}]
+  price: {
+    type: String,
+    required: true
+  },
+  status: {
+    type: String,
+    required: true
+  },
+  timestart: {
+    type: String,
+    required: true
+  },
+  timeend: {
+    type: String,
+    required: true
+  },
+  teams: {
+    type: [{
+      firstPlayer: {
+        type: userSchema,
+        required: true
+      },
+      secondPlayer: {
+        type: userSchema
+      }
+    }],
+    required: true
+  }
+})
+
+const Reservation = mongoose.model("Reservation", ReservationSchema)
 
 export const typeDefReservation = gql`
   type Reservation {
@@ -86,25 +51,75 @@ export const typeDefReservation = gql`
     pitch: Pitch!
   }
 
+  type Team {
+    firstPlayer: User!
+    secondPlayer: User
+  }
+
   type Query {
     allReservations: [Reservation!]
-    getReservationPerClub(id: ID!): [Reservation!]
-    getReservationPerPlayer(id: ID!): [Reservation]
+    getReservationPerClub(club: String!): [Reservation!]
+    getReservationPerPlayer(club: String!): [Reservation]
   }
+
+  type Mutation {
+    createReservation(
+      price: String!
+      timestart: String!
+      timeend: String!
+      teams: [TeamInput!]
+      status: String!
+      pitch: PitchInput!
+    ): Reservation!
+    editReservation(
+      id: ID!
+      price: String
+      timestart: String
+      timeend: String
+      teams: [TeamInput]
+      status: String
+      pitch: PitchInput
+    ): Reservation!
+    deleteReservation(id: ID!): Reservation!
+  }
+
+  input TeamInput {
+    firstPlayer: UserInput!
+    secondPlayer: UserInput
+  }
+
 `
 
-export const getReservationPerClub = () => {
-
+export const getReservationPerClub = async (root, args) => {
+  return await Reservation.find({ "pitch.club": args.club })
 }
 
-export const getReservationPerPlayer = (root, args) => {
-  return reservations.filter(book => book.teams.map((team) => {
-    if (team.firstPlayer.id === args.id || team.secondPlayer.id === args.id) {
-      return book
-    }
-  }))
+export const getReservationPerPlayer = async (root, args) => {
+  //Filtro del pistas por club
+  return await Reservation.find({})
+  // reservations.filter(book => book.teams.map((team) => {
+  //   if (team.firstPlayer.id === args.id || team.secondPlayer.id === args.id) {
+  //     return book
+  //   }
+  // }))
 }
 
-export const allReservations = () => {
-  return reservations
+export const allReservations = async () => {
+  return await Reservation.find({})
+}
+
+export const createReservation = (root, args) => {
+  const newReservation = new Reservation({ ...args })
+  return newReservation.save()
+}
+
+export const editReservation = (root, args) => {
+  const reservation = Reservation.findOne({ id: args.id })
+  reservation = { ...reservation, ...args }
+  return reservation.save()
+}
+
+export const deleteReservation = (root, args) => {
+  const reservation = Reservation.findByIdAndDelete({id: args.id})
+  return reservation.save()
 }
