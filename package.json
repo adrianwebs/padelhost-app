@@ -17,6 +17,7 @@
     "graphql": "^16.5.0",
     "graphql-tools": "^8.2.9",
     "lodash": "^4.17.21",
+    "mongoose": "^6.3.5",
     "next": "12.1.0",
     "node-sass": "^7.0.1",
     "react": "17.0.2",
