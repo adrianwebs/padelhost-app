@@ -15,9 +15,12 @@ import Transactions from './Transactions/Transactions'
 import EditProfile from './EditProfile/EditProfile'
 import Settings from './Settings/Settings'
 
+import { addUser, findUser } from '../../services/userService'
+
 function Home() {
   const user = useUser()
   const [dashboardTab, setDashboardTab] = useState('Dashboard')
+  
 
   const getContent = () => {
     switch (dashboardTab) {
@@ -52,13 +55,13 @@ function Home() {
       </Head>
       {
         user && 
-        <NavbarDashboard username={user.username} />
+        <NavbarDashboard name={user.name} />
       }
       <div className='d-flex flex-direction-row w-100'>
           <img src='images/waveDashboard.png' className='shadow-waves position-absolute w-100'/>
           <div className='w-35 bg-light-dark min-vh-100 d-flex flex-column justify-content-center align-items-center shadow-panel'>
             <div className=''>
-              { <Avatar alt={user ? user.username : 'avatar'} src={user ? user.avatar : 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/271deea8-e28c-41a3-aaf5-2913f5f48be6/de7834s-6515bd40-8b2c-4dc6-a843-5ac1a95a8b55.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzI3MWRlZWE4LWUyOGMtNDFhMy1hYWY1LTI5MTNmNWY0OGJlNlwvZGU3ODM0cy02NTE1YmQ0MC04YjJjLTRkYzYtYTg0My01YWMxYTk1YThiNTUuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.BopkDn1ptIwbmcKHdAOlYHyAOOACXW0Zfgbs0-6BY-E'} /> }
+              {  user ? <Avatar alt={user ? user.name : 'avatar'} src={user.avatar ? user.avatar : 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/271deea8-e28c-41a3-aaf5-2913f5f48be6/de7834s-6515bd40-8b2c-4dc6-a843-5ac1a95a8b55.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzI3MWRlZWE4LWUyOGMtNDFhMy1hYWY1LTI5MTNmNWY0OGJlNlwvZGU3ODM0cy02NTE1YmQ0MC04YjJjLTRkYzYtYTg0My01YWMxYTk1YThiNTUuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.BopkDn1ptIwbmcKHdAOlYHyAOOACXW0Zfgbs0-6BY-E'}  /> : null }
             </div>
             <div className='my-5 min-height-description'>
               <h3>{user && <span>{user.username}</span>}</h3>

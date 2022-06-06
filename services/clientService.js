@@ -1,20 +1,16 @@
 import axios from 'axios';
 
 
-function clientService(query) {
+async function clientService(query) {
   const url = 'https://padelhost-web.herokuapp.com'
   
-  axios.post(url, query, {
+  return await axios.post(url, query, {
     headers: {
       "Content-Type": "application/json"
     }
-  }).then(response => {
-    console.log(response.data)
-  }).catch(error => {
-    console.log(error)
-  })
-
-  return null
+  }).then(function(response) {
+    return response.data.data
+  }).catch(error => error)
 }
 
 export default clientService

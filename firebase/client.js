@@ -1,6 +1,6 @@
 import {initializeApp} from 'firebase/app'
 import {signInWithPopup, getAuth, FacebookAuthProvider, onAuthStateChanged, signOut, TwitterAuthProvider, GoogleAuthProvider } from 'firebase/auth'
-import { userService } from '../services/userService';
+import { findUser, addUser } from '../services/userService';
 
 
 const firebaseConfig = {
@@ -16,11 +16,12 @@ const firebaseConfig = {
 initializeApp(firebaseConfig)
 
 const mapUserFromFirebaseAuthToUser = (user) => {
-    const {displayName, email, photoURL} = user
+    const {displayName, email, photoURL, uid} = user
     return {
         avatar: photoURL,
-        username: displayName,
+        name: displayName,
         email,
+        uid
     }
 }
 
@@ -28,17 +29,22 @@ export const signOutUser = () => {
     return signOut(getAuth());
 }
 
-export const onAuthStateChangedUser = (onChange) => {
-    return onAuthStateChanged(getAuth(), user => {
+export const onAuthStateChangedUser =  (onChange) => {
+    return onAuthStateChanged(getAuth(), async function(user) {
         const normalizedUser = user ? mapUserFromFirebaseAuthToUser(user) : null
-
-        /*
-        if () {
-            userService({ ...normalizedUser, id: getAuth().user.uid })
+        if (normalizedUser != null && normalizedUser != undefined) {
+            const res = await findUser({findUserId: normalizedUser.uid}).then(response => response)
+            if (res == null) {
+                const {uid, name, avatar } = normalizedUser
+                const email = normalizedUser.email ? normalizedUser.email : normalizedUser.name + "@xample.com"
+                const finalUser = await addUser({id: uid, name: name, email: email, avatar: avatar})
+                onChange(finalUser)
+            } else {
+                onChange(res)
+            }
+        } else {
+            onChange(null)
         }
-        */
-
-        onChange(normalizedUser)
     })
 }
 

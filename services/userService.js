@@ -2,11 +2,11 @@ import axios from 'axios';
 
 import clientService from './clientService';
 
-export function userService({...args}) {
+export async function addUser({...args}) {
   const query = {
     query: `
-      mutation addUser($name: String!, $phone: String, $location: String, $email: String!, $password: String!, $avatar: String!, $type: Type!) {
-        createUser(name: $name, phone: $phone, location: $location, email: $email, password: $password, avatar: $avatar, type: $type) {
+      mutation addUser($id: ID!, $name: String!, $phone: String, $location: String, $email: String!, $password: String, $avatar: String, $type: Type) {
+        createUser(id: $id, name: $name, phone: $phone, location: $location, email: $email, password: $password, avatar: $avatar, type: $type) {
           name
           email
           description
@@ -15,16 +15,17 @@ export function userService({...args}) {
           type
         }
       }
-    }
     `,
     variables: {
       ...args
     }
   }
-  clientService(query)
+  return await clientService(query).then(function(response) {
+    return response.createUser
+  })
 }
 
-export function findUser({...args}) {
+export async function findUser({...args}) {
   const query = {
     query: `
       query findUserByID($findUserId: ID!) {
@@ -42,5 +43,7 @@ export function findUser({...args}) {
       ...args
     }
   }
-  clientService(query)
+  return await clientService(query).then(function(response) {
+    return response.findUser
+  })
 }
