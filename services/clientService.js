@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-
 async function clientService(query) {
   const url = 'https://padelhost-web.herokuapp.com'
   
