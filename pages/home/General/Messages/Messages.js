@@ -4,8 +4,18 @@ import { motion } from 'framer-motion'
 import { Box } from '@mui/material'
 import UserChat from '../../../components/Messages/UserChat'
 import ChatFeed from '../../../components/Messages/ChatFeed'
+import { useState, useEffect } from 'react'
 
 function Messages({variants}) {
+  const [roomChats, setRoomChats] = useState([])
+  const [playerChats, setPlayerChats] = useState([])
+  const [selectedRoom, setSelectedRoom] = useState(null)
+
+  useEffect(() => {
+    
+  }, [])
+  
+
   const userFeed = null
   return (
     <motion.div

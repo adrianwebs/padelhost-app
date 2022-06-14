@@ -3,8 +3,14 @@ import { Send, EmojiEmotions, MoreVert} from '@mui/icons-material'
 import { Box, Paper, IconButton, InputBase, Divider, Avatar, Typography } from '@mui/material'
 import useUser from '../../../hooks/user/useUser'
 
-function ChatFeed() {
+function ChatFeed({room}) {
   const user = useUser()
+
+  const handleSendMessage = (e) => {
+    e.preventDefault()
+    console.log(message.value)
+  }
+
   return (
     <>
       <Box height='100%' maxHeight='100%' width='100%' display='flex' flexDirection='column' justifyContent='center'>
@@ -47,15 +53,20 @@ function ChatFeed() {
             component="form"
             sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: '100%', boxShadow:'0 2px 4px rgba(0, 0, 0, 0.25)' }}
           >
+            
             <IconButton sx={{ p: '10px' }} aria-label="menu">
               <EmojiEmotions />
             </IconButton>
             <InputBase
               sx={{ ml: 1, flex: 1 }}
+              id='message'
               placeholder="Escribe algo que enviar.."
             />
             <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-            <IconButton sx={{ p: '10px', color:"#69DFE2" }} aria-label="directions">
+            <IconButton sx={{ p: '10px', color:"#69DFE2" }} aria-label="directions" 
+              type='submit'
+              onClick={(e) => handleSendMessage(e)}
+            >
               <Send />
             </IconButton>
           </Paper>

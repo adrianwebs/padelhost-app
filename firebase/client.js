@@ -30,9 +30,8 @@ export const signOutUser = () => {
 export const onAuthStateChangedUser = (onChange) => {
     return onAuthStateChanged(getAuth(), user => {
         const normalizedUser = user ? mapUserFromFirebaseAuthToUser(user) : null
-
         onChange(normalizedUser)
-    })
+    })  
 }
 
 export const loginWithFacebook = () => {
