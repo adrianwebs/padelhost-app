@@ -24,3 +24,29 @@ function getRoomById(id) {
     }
   }
 }
+
+function sendMessageToRoom(roomId, message) {
+  const query = {
+    query: `
+      mutation sendMessage($roomid: ID!, $message: MessageInput!) {
+        sendMessage(id: $roomid, message: $message) { 
+          messages {
+            user {
+              name
+              avatar
+            }
+            text
+            createdAt
+          } 
+        }
+      }
+    `,	
+    variables: {
+      roomid: roomId,
+      message: message
+    }
+  }
+  return await clientService(query).then(function(response) {
+    return response.sendMessage
+  })
+}
