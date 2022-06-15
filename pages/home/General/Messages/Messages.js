@@ -1,10 +1,10 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 
 import { motion } from 'framer-motion'
 import { Box } from '@mui/material'
 import UserChat from '../../../components/Messages/UserChat'
 import ChatFeed from '../../../components/Messages/ChatFeed'
-import { useState, useEffect } from 'react'
+import { getRoom } from '../../../../services/messageService'
 
 function Messages({variants}) {
   const [roomChats, setRoomChats] = useState([])
@@ -12,7 +12,7 @@ function Messages({variants}) {
   const [selectedRoom, setSelectedRoom] = useState(null)
 
   useEffect(() => {
-    
+    getRoom("62977b9b07bb6e7fdacae575").then(res => setSelectedRoom(res))
   }, [])
   
 
@@ -44,7 +44,7 @@ function Messages({variants}) {
                       message={userFeed ? userFeed.message : 'Hacer el Chat asdfasdfasdgasdfgasfdgasfsd'} 
                       time={userFeed ? userFeed.time : '09:00'} 
                       active={userFeed ? userFeed.active : false} 
-                      unread={userFeed ? userFeed.noread : '5'} 
+                      unread={userFeed ? userFeed.noread : '5'}
                     />
                     })
                   }
@@ -67,7 +67,7 @@ function Messages({variants}) {
               </Box>
             </Box>
             <Box width='75%' height='630px' margin='1rem 0' overflow='hidden' borderRadius='15px' boxShadow='0 2px 4px rgba(0, 0, 0, 0.25)'>
-              <ChatFeed id={0} type={userFeed ? userFeed.type : 'Player'} />
+              <ChatFeed room={ selectedRoom ? selectedRoom : null} />
             </Box>
           </Box>
         </Box>
