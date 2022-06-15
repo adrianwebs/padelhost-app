@@ -12,7 +12,7 @@ import { motion } from 'framer-motion'
 
 const pages = ['Dashboard', 'Pitches', 'Matches', 'Tournaments', 'Leaderboard']
 
-function HomeNavbar ({username}) {
+function HomeNavbar ({name}) {
 
   const handleSignOut = () => {
     signOutUser()
@@ -42,7 +42,7 @@ function HomeNavbar ({username}) {
               
               <div className='d-flex justify-content-center align-items-center '>
                   <button onClick={handleSignOut}>Logout</button>
-                  <Nav.Link className='mx-2 text-white'>{username}</Nav.Link>
+                  <Nav.Link className='mx-2 text-white'>{name}</Nav.Link>
                 </div>
             </Navbar.Collapse>
           </Container>
