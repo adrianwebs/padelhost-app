@@ -21,7 +21,7 @@ const mapUserFromFirebaseAuthToUser = (user) => {
         avatar: photoURL,
         name: displayName,
         email,
-        uid
+        id: uid
     }
 }
 
@@ -33,11 +33,11 @@ export const onAuthStateChangedUser =  (onChange) => {
     return onAuthStateChanged(getAuth(), async function(user) {
         const normalizedUser = user ? mapUserFromFirebaseAuthToUser(user) : null
         if (normalizedUser != null && normalizedUser != undefined) {
-            const res = await findUser({findUserId: normalizedUser.uid}).then(response => response)
+            const res = await findUser({findUserId: normalizedUser.id}).then(response => response)
             if (res == null) {
-                const {uid, name, avatar } = normalizedUser
+                const {id, name, avatar } = normalizedUser
                 const email = normalizedUser.email ? normalizedUser.email : normalizedUser.name + "@xample.com"
-                const finalUser = await addUser({id: uid, name: name, email: email, avatar: avatar})
+                const finalUser = await addUser({id: id, name: name, email: email, avatar: avatar})
                 onChange(finalUser)
             } else {
                 onChange(res)
