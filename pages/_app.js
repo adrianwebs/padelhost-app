@@ -7,6 +7,16 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 import Head from 'next/head'
 import { store } from '../services/store'
 
+import { ApolloClient, HttpLink, gql, InMemoryCache, ApolloProvider } from "@apollo/client";
+
+const client = new ApolloClient({
+  link: new HttpLink({
+    uri: 'http://localhost:4000'
+  }),
+  cache: new InMemoryCache
+})
+
+
 function MyApp({ Component, pageProps }) {
   const theme = createTheme({
     palette: {

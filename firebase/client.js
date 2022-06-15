@@ -1,5 +1,6 @@
-import firebase, {initializeApp} from 'firebase/app'
-import auth, {signInWithPopup, getAuth, FacebookAuthProvider, onAuthStateChanged, signOut, TwitterAuthProvider, GoogleAuthProvider } from 'firebase/auth'
+import {initializeApp} from 'firebase/app'
+import {signInWithPopup, getAuth, FacebookAuthProvider, onAuthStateChanged, signOut, TwitterAuthProvider, GoogleAuthProvider } from 'firebase/auth'
+import { findUser, addUser } from '../services/userService';
 
 
 const firebaseConfig = {
@@ -15,11 +16,12 @@ const firebaseConfig = {
 initializeApp(firebaseConfig)
 
 const mapUserFromFirebaseAuthToUser = (user) => {
-    const {displayName, email, photoURL} = user
+    const {displayName, email, photoURL, uid} = user
     return {
         avatar: photoURL,
-        username: displayName,
-        email
+        name: displayName,
+        email,
+        id: uid
     }
 }
 
@@ -27,11 +29,23 @@ export const signOutUser = () => {
     return signOut(getAuth());
 }
 
-export const onAuthStateChangedUser = (onChange) => {
-    return onAuthStateChanged(getAuth(), user => {
+export const onAuthStateChangedUser =  (onChange) => {
+    return onAuthStateChanged(getAuth(), async function(user) {
         const normalizedUser = user ? mapUserFromFirebaseAuthToUser(user) : null
-        onChange(normalizedUser)
-    })  
+        if (normalizedUser != null && normalizedUser != undefined) {
+            const res = await findUser({findUserId: normalizedUser.id}).then(response => response)
+            if (res == null) {
+                const {id, name, avatar } = normalizedUser
+                const email = normalizedUser.email ? normalizedUser.email : normalizedUser.name + "@xample.com"
+                const finalUser = await addUser({id: id, name: name, email: email, avatar: avatar})
+                onChange(finalUser)
+            } else {
+                onChange(res)
+            }
+        } else {
+            onChange(null)
+        }
+    })
 }
 
 export const loginWithFacebook = () => {

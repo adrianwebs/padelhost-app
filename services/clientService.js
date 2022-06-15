@@ -9,7 +9,7 @@ async function clientService(query) {
     }
   }).then(function(response) {
     return response.data.data
-  }).catch(error => console.log(error))
+  }).catch(error => error)
 }
 
 export default clientService

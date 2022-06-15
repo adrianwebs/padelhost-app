@@ -12,6 +12,8 @@ import NavbarDashboard from '../components/navbar/NavbarDashboard'
 import { useSelector } from 'react-redux'
 
 
+import { addUser, findUser } from '../../services/userService'
+
 function Home() {
   const user = useUser()
   const navbarSelected = useSelector(state => state)
@@ -42,7 +44,7 @@ function Home() {
       </Head>
       {
         user && 
-        <NavbarDashboard username={user.username} />
+        <NavbarDashboard name={user.name} />
       }
       <div className='d-flex flex-direction-row w-100'>
           <img src='images/waveDashboard.png' className='shadow-waves position-absolute w-100'/>
