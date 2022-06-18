@@ -1,5 +1,4 @@
 import React from 'react'
-import { createStore } from 'redux'
 import Head from 'next/head'
 import useUser from '../../hooks/user/useUser'
 
@@ -11,8 +10,6 @@ import Clasificacion from './Clasificacion/Clasificacion'
 import NavbarDashboard from '../components/navbar/NavbarDashboard'
 import { useSelector } from 'react-redux'
 
-
-import { addUser, findUser } from '../../services/userService'
 
 function Home() {
   const user = useUser()
@@ -34,6 +31,7 @@ function Home() {
         break;
     }
   }
+
 
   return (
     <>

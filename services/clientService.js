@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { SubscriptionClient} from 'graphql-subscriptions-client';
 
 async function clientService(query) {
-  const url = 'https://padelhost-web.herokuapp.com'
+  const url = 'http://localhost:5000/graphql';
   
   return await axios.post(url, query, {
     headers: {
@@ -13,3 +14,7 @@ async function clientService(query) {
 }
 
 export default clientService
+
+export async function subscriptionService(){
+  
+}

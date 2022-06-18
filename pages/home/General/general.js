@@ -11,6 +11,11 @@ import Settings from './Settings/Settings'
 import { motion, AnimatePresence } from 'framer-motion'
 
 import { Box } from '@mui/material'
+
+import { getRoomById, GET_UPDATED_ROOMS } from '../../../services/messageService'
+
+import { useSubscription } from '@apollo/client' 
+
 function general() {
   const user = useUser()
   const [dashboardTab, setDashboardTab] = useState('Dashboard')
@@ -20,7 +25,7 @@ function general() {
       case 'Dashboard':
         return <Dashboard key='Dashboard' variants={variants}/>
       case 'Messages':
-        return <Messages key='Messages' variants={variants}/>
+        return <Messages key='Messages' variants={variants} rooms={rooms}/>
       case 'EditProfile':
         return <EditProfile key='EditProfile' variants={variants}/>
       case 'Settings':
@@ -29,6 +34,18 @@ function general() {
         break;
     }
   }
+
+  useSubscription(GET_UPDATED_ROOMS, {
+    onSubscriptionData: ({subscriptionData}) => {
+      setRooms(subscriptionData.data.messageAdded)
+    }
+  })
+
+  const [rooms, setRooms] = useState([])
+
+  useEffect(async () => {
+    user && await getRoomById(user.id).then(rooms => setRooms(rooms))
+  }, [user])
 
   const variants = {
     hidden: {

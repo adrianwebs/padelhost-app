@@ -30,6 +30,7 @@ export async function findUser({...args}) {
     query: `
       query findUserByID($findUserId: ID!) {
         findUser(id: $findUserId) {
+          id
           name
           email
           description

@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useRef, useState} from 'react'
 import { Send, EmojiEmotions, MoreVert} from '@mui/icons-material'
 import { Box, Paper, IconButton, InputBase, Divider, Avatar, Typography } from '@mui/material'
 import useUser from '../../../hooks/user/useUser'
@@ -17,7 +17,7 @@ function ChatFeed({room}) {
       text: messagetext.value,
       user: {
         id: userMe.id,
-        name: userMe.username,
+        name: userMe.name,
         avatar: userMe.avatar,
         email: userMe.email
       },
@@ -28,16 +28,29 @@ function ChatFeed({room}) {
   }
 
   const [renderRoom, setRenderRoom] = useState(room)
-  const [roomName, setroomName] = useState(null)
+  const [otherUser, setOtherUser] = useState(null)
 
-  useEffect(() => {
-    if(room && room.users != null && room.type === 'player') {
+  useEffect(async () => {
+    if(room && userMe && room.users != null && room.type === 'player') {
       setRenderRoom(room)
       const otherUser = room.users.find(user => user.id != userMe.id)
-      setroomName(otherUser.name)
+      await setOtherUser(otherUser)
     }
-  }, [room])
+    
+    
+    
+  }, [room, userMe])
+  
+  useEffect(() => {
+    scrollToBottom()
+  }, [renderRoom])
+  
 
+  const messageEnd = useRef(null)
+  
+  const scrollToBottom = () => {
+    messageEnd.current?.scrollIntoView({ behavior: 'smooth' }, {alignToTop: true})
+  }
 
   return (
     <>
@@ -48,31 +61,39 @@ function ChatFeed({room}) {
           >
             <Box display='flex' alignItems='center'>
               <IconButton sx={{ p: '10px' }} aria-label="menu">
-                <Avatar />
+                <Avatar src={otherUser ? otherUser.avatar : null} />
               </IconButton>
-              <Typography fontWeight={700} p='0.5rem'>{renderRoom && renderRoom.type === 'match' ? renderRoom.name : (roomName != null ? roomName : "Loading...")}</Typography>
+              <Typography fontWeight={700} p='0.5rem'>{renderRoom && renderRoom.type === 'match' ? renderRoom.name : (otherUser && otherUser.name != null ? otherUser.name : "Loading...")}</Typography>
             </Box>
             <IconButton aria-label="directions" justifySelf='end'>
               <MoreVert />
             </IconButton>
           </Box>
         </Box>
-        <Box flexGrow='1' padding='2rem' overflow='auto' maxHeight='100%' display='flex' flexDirection='column' className='hide-scrollbar'>
+        <Box flexGrow='1' padding='2rem' overflow='auto' maxHeight='100%' display='flex' flexDirection='column' className='hide-scrollbar' id='chatScrollable'>
           {
-            renderRoom && renderRoom.messages && renderRoom.messages.map((message, index) => {
-              return <>
-                <Message 
-                  key={index}
-                  time={message.createdAt} 
-                  text={message.text}
-                  type={renderRoom.type}
-                  avatar={message.user.avatar}
-                  me={userMe ? userMe.username : null} 
-                  player={message.user.name}
-                />
-              </>
-            })
+            renderRoom && renderRoom.messages != null && renderRoom.messages.length != 0 ? renderRoom.messages.map((message, index) => {
+                return <>
+                  <Message 
+                    key={index}
+                    time={message.createdAt} 
+                    text={message.text}
+                    type={renderRoom.type}
+                    avatar={message.user.avatar}
+                    me={userMe ? userMe.name : null} 
+                    player={message.user.name}
+                  />
+                </>
+              })
+            : 
+            <Box display='flex' flexDirection='row' alignItems='center' minWidth='100%' height='100%'>
+              <Box p='1rem' display='flex' alignItems='center' justifyContent='center' minWidth='100%'>
+                <Typography color='#c4c4c4'>No hay mensajes en esta conversación</Typography>
+              </Box>
+            </Box>
+            
           }
+          <div style={{ float:"left", clear: "both" }} ref={messageEnd}></div>
         </Box>
         <Box width='100%' padding='2rem' justifySelf='end' display='flex' flexDirection='row' boxShadow='0 -1px 4px rgba(0,0,0,0.25)'>
           <Paper

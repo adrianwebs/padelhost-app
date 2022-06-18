@@ -1,28 +1,38 @@
+import subscriptionService from "./clientService"
 import clientService from "./clientService";
+import { gql } from "@apollo/client";
 
-function getRoomById(id) {
+export async function getRoomById(id) {
   const query = {
     query: `
-      query getRoomById($id: ID!) {
-        room(id: $id) {
+    query getRoomById($getRoomsUserId: ID!) {
+      getRoomsUser(id: $getRoomsUserId) {
+        id
+        name
+        type
+        users {
           id
           name
-          messages {
-            id
-            content
-            createdAt
-            user {
-              id
-              name
-            }
+          avatar
+        }
+        messages {
+          user {
+            name
+            avatar
           }
+          text
+          createdAt
         }
       }
+    }
     `,
     variables: {
-      id
+      getRoomsUserId: id
     }
   }
+  return await clientService(query).then(function(response) {
+    return response.getRoomsUser
+  })
 }
 
 export async function getRoom(roomId) {
@@ -95,3 +105,26 @@ export async function sendMessageToRoom(roomId, message) {
     return response.sendMessage
   })
 }
+
+export const GET_UPDATED_ROOMS = gql`
+  subscription messageAdded {
+    messageAdded {
+      id
+      name
+      type
+      users {
+        id
+        name
+        avatar
+      }
+      messages {
+        text
+        createdAt
+        user {
+          name
+          avatar
+        }
+      }
+    }
+  }
+`
