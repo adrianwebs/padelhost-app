@@ -7,23 +7,21 @@ import ChatFeed from '../../../components/Messages/ChatFeed'
 import { getRoom } from '../../../../services/messageService'
 import useUser from '../../../../hooks/user/useUser'
 
-function Messages({variants, rooms}) {
+function Messages({variants, rooms, userMe}) {
   const [roomChats, setRoomChats] = useState([])
   const [playerChats, setPlayerChats] = useState([])
   const [selectedRoom, setSelectedRoom] = useState(null)
 
   useEffect(() => {
-    getRoom("62977b9b07bb6e7fdacae575").then(res => setSelectedRoom(res))
-  }, [])
-
-  useEffect(async () => {
     console.log(rooms)
-    await setRoomChats(rooms.filter(room => room.type === 'match'))
-    await setPlayerChats(rooms.filter(room => room.type === 'chat'))
-    setSelectedRoom(rooms.find(room => room.id === '62977b9b07bb6e7fdacae575'))
+    setRoomChats(rooms.filter(room => room.type === 'match'))
+    setPlayerChats(rooms.filter(room => room.type === 'chat'))
   }, [rooms])
+
+  const selectRoom = (changeRoom) => {
+    setSelectedRoom(changeRoom)
+  }
   
-  const userMe = useUser()
   const userFeed = null
   return (
     <motion.div
@@ -45,16 +43,20 @@ function Messages({variants, rooms}) {
                 <Box overflow='auto' className='hide-scrollbar'>
                   {
                     userMe && playerChats.length != 0 ? playerChats.map((item, index) => {
-                      return <UserChat
-                      key={index}
-                      image={item.users.find(user => user.id != userMe.id).avatar}
-                      user={item.users.find(user => user.id != userMe.id).name}
-                      message={item.messages.length != 0 ? item.messages[item.messages.length - 1].text : null}
-                      messageUser={item.messages.length != 0 ? item.messages[item.messages.length - 1].user.name : null}
-                      time={item.messages.length != 0 ? item.messages[item.messages.length - 1].createdAt : null} 
-                      active={userFeed ? userFeed.active : false} 
-                      unread={userFeed ? userFeed.noread : '5'}
-                    />
+                      return <Box
+                        onClick={() => selectRoom(item)}
+                      >
+                        <UserChat
+                          key={index}
+                          image={item.users.find(user => user.id != userMe.id).avatar}
+                          user={item.users.find(user => user.id != userMe.id).name}
+                          message={item.messages.length != 0 ? item.messages[item.messages.length - 1].text : null}
+                          messageUser={item.messages.length != 0 ? item.messages[item.messages.length - 1].user.name : null}
+                          time={item.messages.length != 0 ? item.messages[item.messages.length - 1].createdAt : null} 
+                          active={userFeed ? userFeed.active : false} 
+                          unread={userFeed ? userFeed.noread : '5'}
+                        />
+                      </Box>
                     })
                     :
                     <Box display='flex' flexDirection='row' alignItems='center' minWidth='100%' height='100%'>
@@ -66,17 +68,20 @@ function Messages({variants, rooms}) {
                 </Box>
                 <Box  overflow='auto' className='hide-scrollbar'>
                   {
-                    roomChats.length != 0 ? playerChats.map((item, index) => {
-                      console.log(item)
-                      return <UserChat
-                      key={index}
-                      image={item.avatar ? item.avatar : 'https://i.pravatar.cc/300'}
-                      user={item.messages.length != 0 ? item.messages[item.messages.length - 1].user.name : null}
-                      message={item.messages.length != 0 ? item.messages[item.messages.length - 1].text : null} 
-                      time={item.messages.length != 0 ? item.messages[item.messages.length - 1].createdAt : null} 
-                      active={userFeed ? userFeed.active : false} 
-                      unread={userFeed ? userFeed.noread : '5'}
-                    />
+                    roomChats.length != 0 ? roomChats.map((item, index) => {
+                      return <Box
+                        onClick={() => selectRoom(item)}
+                      >
+                        <UserChat
+                          key={index}
+                          image={item.avatar ? item.avatar : 'https://i.pravatar.cc/300'}
+                          user={item.messages.length != 0 ? item.messages[item.messages.length - 1].user.name : null}
+                          message={item.messages.length != 0 ? item.messages[item.messages.length - 1].text : null} 
+                          time={item.messages.length != 0 ? item.messages[item.messages.length - 1].createdAt : null} 
+                          active={userFeed ? userFeed.active : false} 
+                          unread={userFeed ? userFeed.noread : '5'}
+                        />
+                      </Box>
                     })
                     :
                     <Box display='flex' flexDirection='row' alignItems='center' minWidth='100%' height='100%'>

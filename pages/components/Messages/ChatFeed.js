@@ -27,7 +27,7 @@ function ChatFeed({room}) {
     messagetext.value = ''
   }
 
-  const [renderRoom, setRenderRoom] = useState(room)
+  const [renderRoom, setRenderRoom] = useState({})
   const [otherUser, setOtherUser] = useState(null)
 
   useEffect(async () => {
@@ -36,9 +36,6 @@ function ChatFeed({room}) {
       const otherUser = room.users.find(user => user.id != userMe.id)
       await setOtherUser(otherUser)
     }
-    
-    
-    
   }, [room, userMe])
   
   useEffect(() => {

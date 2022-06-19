@@ -25,7 +25,7 @@ function general() {
       case 'Dashboard':
         return <Dashboard key='Dashboard' variants={variants}/>
       case 'Messages':
-        return <Messages key='Messages' variants={variants} rooms={rooms}/>
+        return <Messages key='Messages' variants={variants} rooms={rooms} userMe={user}/>
       case 'EditProfile':
         return <EditProfile key='EditProfile' variants={variants}/>
       case 'Settings':
