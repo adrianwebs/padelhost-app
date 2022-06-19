@@ -14,7 +14,7 @@ import { Box } from '@mui/material'
 
 import { getRoomById, GET_UPDATED_ROOMS } from '../../../services/messageService'
 
-import { useSubscription } from '@apollo/client' 
+import { useLazyQuery, useQuery, useSubscription } from '@apollo/client' 
 
 function general() {
   const user = useUser()
@@ -43,9 +43,21 @@ function general() {
 
   const [rooms, setRooms] = useState([])
 
-  useEffect(async () => {
-    user && await getRoomById(user.id).then(rooms => setRooms(rooms))
+  const [getRooms, {loading, data, error}] = useLazyQuery(getRoomById, {
+    onCompleted: (data) => {
+      setRooms(data.getRoomsUser)
+    }
+  })
+
+  useEffect(() => {
+    if (user){ 
+      getRooms({variables: {
+        getRoomsUserId: user.id
+      }})
+    }
   }, [user])
+  
+
 
   const variants = {
     hidden: {

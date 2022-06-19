@@ -31,7 +31,7 @@ function ChatFeed({room}) {
   const [otherUser, setOtherUser] = useState(null)
 
   useEffect(async () => {
-    if(room && userMe && room.users != null && room.type === 'player') {
+    if(room && userMe && room.users != null && room.type === 'chat') {
       setRenderRoom(room)
       const otherUser = room.users.find(user => user.id != userMe.id)
       await setOtherUser(otherUser)
@@ -146,7 +146,7 @@ export const Message = ({time, text, avatar, player, me, type}) => {
         <Box p='10px' m='10px' backgroundColor={player === me ? '#69DFE222' : ''} boxShadow='0 2px 4px rgba(0, 0, 0, 0.2)' borderRadius={player === me ? '15px 0 15px 15px' : '0 15px 15px 15px'}>
           <Box display='flex' flexDirection={player === me ? 'row-reverse' : 'row'} justifyContent='space-between' alignItems='center'>
             <Typography fontWeight={600} fontSize={16}>{player} </Typography>
-            <Typography fontWeight={500} fontSize={12} m={player === me ? '0 1rem 0 0' : '0 0 0 1rem'}>{type === 'player' ? date.toLocaleTimeString(navigator.language, {
+            <Typography fontWeight={500} fontSize={12} m={player === me ? '0 1rem 0 0' : '0 0 0 1rem'}>{type === 'chat' ? date.toLocaleTimeString(navigator.language, {
               hour: '2-digit',
               minute: '2-digit'
             }) : ''}</Typography>

@@ -2,38 +2,29 @@ import subscriptionService from "./clientService"
 import clientService from "./clientService";
 import { gql } from "@apollo/client";
 
-export async function getRoomById(id) {
-  const query = {
-    query: `
-    query getRoomById($getRoomsUserId: ID!) {
-      getRoomsUser(id: $getRoomsUserId) {
+export const getRoomById = gql`
+  query getRoomById($getRoomsUserId: ID!) {
+    getRoomsUser(id: $getRoomsUserId) {
+      id
+      name
+      type
+      users {
         id
         name
-        type
-        users {
-          id
+        avatar
+      }
+      messages {
+        user {
           name
           avatar
         }
-        messages {
-          user {
-            name
-            avatar
-          }
-          text
-          createdAt
-        }
+        text
+        createdAt
       }
     }
-    `,
-    variables: {
-      getRoomsUserId: id
-    }
   }
-  return await clientService(query).then(function(response) {
-    return response.getRoomsUser
-  })
-}
+`
+
 
 export async function getRoom(roomId) {
   const query = {

@@ -17,8 +17,9 @@ function Messages({variants, rooms}) {
   }, [])
 
   useEffect(async () => {
+    console.log(rooms)
     await setRoomChats(rooms.filter(room => room.type === 'match'))
-    await setPlayerChats(rooms.filter(room => room.type === 'player'))
+    await setPlayerChats(rooms.filter(room => room.type === 'chat'))
     setSelectedRoom(rooms.find(room => room.id === '62977b9b07bb6e7fdacae575'))
   }, [rooms])
   
